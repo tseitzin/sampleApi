@@ -1,0 +1,452 @@
+basePath: /
+definitions:
+  controllers.CreateCompanyInput:
+    properties:
+      address1:
+        type: string
+      address2:
+        type: string
+      city:
+        type: string
+      companyname:
+        type: string
+      phonenumber:
+        type: string
+      state:
+        type: string
+      zip:
+        type: string
+    type: object
+  models.Customer:
+    properties:
+      address1:
+        type: string
+      address2:
+        type: string
+      city:
+        type: string
+      firstname:
+        type: string
+      id:
+        type: integer
+      lastname:
+        type: string
+      phonenumber:
+        type: string
+      state:
+        type: string
+      vehicles:
+        items:
+          $ref: '#/definitions/models.Vehicle'
+        type: array
+      zip:
+        type: string
+    type: object
+  models.Tire:
+    properties:
+      currentpressure:
+        type: integer
+      make:
+        type: string
+      maxpressure:
+        type: integer
+      tid:
+        type: integer
+      tireid:
+        type: integer
+      tirelocation:
+        type: string
+      tiremodel:
+        type: string
+      tiresize:
+        type: string
+      treadwear:
+        type: string
+    type: object
+  models.Vehicle:
+    properties:
+      carmodel:
+        type: string
+      make:
+        type: string
+      tires:
+        items:
+          $ref: '#/definitions/models.Tire'
+        type: array
+      vehid:
+        type: integer
+      vid:
+        type: integer
+      vin:
+        type: string
+      year:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: tseitzinger@gmail.com
+    name: Tim Seitzinger
+  description: A Customer, Vehicle and Tire API in Go using Gin framework.
+  title: Tire Tread Application API
+  version: "1.0"
+paths:
+  /companies:
+    get:
+      description: Responds with the list of all customers as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/controllers.CreateCompanyInput'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get companies array
+      tags:
+      - companies
+    post:
+      description: Takes a company JSON and store in DB. Return saved JSON.
+      parameters:
+      - description: Company JSON
+        in: body
+        name: company
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.CreateCompanyInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.CreateCompanyInput'
+      security:
+      - ApiKeyAuth: []
+      summary: Store a new company
+      tags:
+      - companies
+  /customers:
+    get:
+      description: Responds with the list of all customers as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Customer'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get Customers array
+      tags:
+      - customers
+    post:
+      description: Takes a customer JSON and store in DB. Return saved JSON.
+      parameters:
+      - description: Customer JSON
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/models.Customer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customer'
+      security:
+      - ApiKeyAuth: []
+      summary: Store a new customer
+      tags:
+      - customers
+  /customers/{id}:
+    delete:
+      description: Delete the customer whose ID value matches the ID.
+      parameters:
+      - description: delete customer by id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customer'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete single customer by id
+      tags:
+      - customers
+    get:
+      description: Returns the customer whose ID value matches the ID.
+      parameters:
+      - description: search customer by id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customer'
+      security:
+      - ApiKeyAuth: []
+      summary: Get single customer by id
+      tags:
+      - customers
+    patch:
+      description: Updates the book whose ID value matches the ID.
+      parameters:
+      - description: update customer by id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Customer JSON
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/models.Customer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customer'
+      security:
+      - ApiKeyAuth: []
+      summary: Update single customer by id
+      tags:
+      - customers
+  /tires:
+    get:
+      description: Responds with the list of all Tires as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Tire'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get Tires array
+      tags:
+      - tires
+    post:
+      description: Takes a tire JSON and store in DB. Return saved JSON.
+      parameters:
+      - description: Tire JSON
+        in: body
+        name: tire
+        required: true
+        schema:
+          $ref: '#/definitions/models.Tire'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Tire'
+      security:
+      - ApiKeyAuth: []
+      summary: Store a new tire
+      tags:
+      - tires
+  /tires/{t_id}:
+    delete:
+      description: Delete the tire whose ID value matches the ID.
+      parameters:
+      - description: delete tire by t_id
+        in: path
+        name: t_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Tire'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete single tire by id
+      tags:
+      - tires
+    get:
+      description: Returns the tire whose ID value matches the TID.
+      parameters:
+      - description: search tire by t_id
+        in: path
+        name: t_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Tire'
+      security:
+      - ApiKeyAuth: []
+      summary: Get single tire by v_id
+      tags:
+      - tires
+    patch:
+      description: Updates the tire whose ID value matches the ID.
+      parameters:
+      - description: update tire by id
+        in: path
+        name: t_id
+        required: true
+        type: integer
+      - description: Tire JSON
+        in: body
+        name: tire
+        required: true
+        schema:
+          $ref: '#/definitions/models.Tire'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Tire'
+      security:
+      - ApiKeyAuth: []
+      summary: Update single tire by id
+      tags:
+      - tires
+  /vehicles:
+    get:
+      description: Responds with the list of all vehicles as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Vehicle'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get Vehicles array
+      tags:
+      - vehicles
+    post:
+      description: Takes a vehicle JSON and store in DB. Return saved JSON.
+      parameters:
+      - description: Vehicle JSON
+        in: body
+        name: vehicle
+        required: true
+        schema:
+          $ref: '#/definitions/models.Vehicle'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Vehicle'
+      security:
+      - ApiKeyAuth: []
+      summary: Store a new vehicle
+      tags:
+      - vehicles
+  /vehicles/{v_id}:
+    delete:
+      description: Delete the vehicle whose ID value matches the ID.
+      parameters:
+      - description: delete vehicle by v_id
+        in: path
+        name: v_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Vehicle'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete single vehicle by id
+      tags:
+      - vehicles
+    get:
+      description: Returns the vehicle whose ID value matches the ID.
+      parameters:
+      - description: search vehicle by v_id
+        in: path
+        name: v_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Vehicle'
+      security:
+      - ApiKeyAuth: []
+      summary: Get single vehicle by v_id
+      tags:
+      - vehicles
+    patch:
+      description: Updates the vehicle whose VID value matches the VID.
+      parameters:
+      - description: update vehicle by vid
+        in: path
+        name: v_id
+        required: true
+        type: integer
+      - description: Vehicle JSON
+        in: body
+        name: vehicle
+        required: true
+        schema:
+          $ref: '#/definitions/models.Vehicle'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Vehicle'
+      security:
+      - ApiKeyAuth: []
+      summary: Update single vehicle by id
+      tags:
+      - vehicles
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
